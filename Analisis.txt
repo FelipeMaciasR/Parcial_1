@@ -1,0 +1,14 @@
+Informe:
+Se tienen dos archivos .txt, uno con las materias y otro con el horario
+el primero, tendra este formato codigo,nombre,creditos,h.clase,h.autonomas
+y el segundo, este codigo,hora,dia. Para ubicar la informacion del horario
+se declara una matriz tipo int de 12x5 que representara los cinco dias de 
+la semana con una franja horaria de 12 horas de 8am a 8pm. Se leera el 
+archivo del horario y la celda que representa esa hora, pasa a ser el nombre de  
+la materia, luego se imprime para que el usuario visualice. A medida que cambia el valor 
+de las celdas de la matriz, se va sumando las horas que ocupa cada materia y 
+en otra matriz se almacenara el codigo de la materia, las horas asignadas en la 
+matriz y las horas totales de estudio por materia, de acuerdo a esta informacion, 
+se pregunta al usuario en donde va a ubicar las horas faltantes (Estudio autonomo)
+en la matriz que representa la semana, una vez completado este proceso, 
+se imprime el horario con las horas clase y autonomas.
