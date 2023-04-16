@@ -2,4 +2,4 @@
 2598521,Informatica2,4,7,5
 2538201,Ingles2,1,4,0
 2555331,CalculoVectorial,3,4,5
-2599431,ProbabilidadyEstadistica,3,4,5
+2599431,Probabilidad,3,4,5
