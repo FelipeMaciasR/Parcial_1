@@ -1,12 +1,8 @@
 #include <iostream>
 #include <fstream>
+#include <Funciones.h>
 
 using namespace std;
-
-int NumElem(char* array);
-bool CompArr(char* array1, char* array2);
-int Char_Int(char* array);
-int ConversionDia(char c);
 
 int main()
 {
@@ -39,14 +35,14 @@ int main()
         }
         fin.close();
         //Verificacion de la informacion guardada
-
+        /*
         for(int i = 0; i < materia; i++) {
             for(int j = 0; j < 5; j++) {
                 cout << Materias[i][j] << " ";
             }
             cout << endl;
         }
-
+        */
         fin.open("Horario.txt");
         if(!fin.is_open()){
             throw '2';
@@ -99,8 +95,9 @@ int main()
             }
 
         }
-        //Impresion de la matriz Horario para verificar
+        //Impresion de la matriz Horario para verificar  
         char Dias[5][11] = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes"};
+        /*
         cout << "       ";
         for(int j = 0; j < 5; j++) {
             printf("%-*s", 20, Dias[j]);
@@ -113,6 +110,88 @@ int main()
             }
             cout << endl;
         }
+        */
+        //Menu para asignacion de horas autonomas
+        int opcion, h, d, nd, nh;
+        char materiaHA[20]={0};
+        bool Verificacion;
+        do {
+                cout << "Menu:" << endl;
+                cout << "1. Visualizar horario" << endl;
+                cout << "2. Asignar horas de estudio autonomo" << endl;
+                cout << "3. Cambiar horas de estudio autonomo" << endl;
+                cout << "4. Salir" << endl;
+                cout << "Selecciona una opcion: ";
+                cin >> opcion;
+
+                switch (opcion) {
+                    case 1:
+                    //Impresion de horario
+                    cout << "       ";
+                    for(int j = 0; j < 5; j++) {
+                        printf("%-*s", 20, Dias[j]);
+                    }
+                    cout << endl;
+                    for(int i = 0; i < 12; i++) {
+                        printf("%2d:00  ", i+8);
+                        for(int j = 0; j < 5; j++) {
+                            printf("%-*s", 20, Horario[i][j]);
+                        }
+                        cout << endl;
+                    }
+                        break;
+                    case 2:
+                    //Asignacion de horas autonomas a las horas disponibles
+                    cout<<"Tienes las siguientes materias matriculadas: "<<endl;
+                    for(int i = 0; i < materia; i++) {
+                        cout <<"-"<< Materias[i][1] << " con "<<Materias[i][4]<< " horas de estudio autonomo por asignar"<< endl;
+                    }
+                    cout<<"A que materia le vas a asignar hora de estudio autonomo? ";
+                    cin>>materiaHA;
+                    Verificacion=false;
+                    for(int i = 0; i < materia; i++) {
+                        if(CompArr(materiaHA,Materias[i][1])){
+                            if(Char_Int(Materias[i][4])>0){
+                                cout<<"En que dia quieres asignar la hora? ";
+                                cin>>d;
+                                cout<<"A que hora? ";
+                                cin>>h;
+                                modificarHorario(Horario, d, h, materiaHA);
+                                Horario[h-8][d-1][NumElem(materiaHA)] = '*'; //Indica hora autonoma, diferente de hora de clase
+                                Materias[i][4][0]=(Char_Int(Materias[i][4])-1)+48;//Resto uno a las horas autonomas por asignar
+
+                            }
+                            else{
+                                cout<<"No tienes horas de estudio autonomo por asignar en "<<Materias[i][1]<<endl;
+                            }
+                            Verificacion=true;
+                            break;
+                        }
+                    }
+                    if(Verificacion==false){
+                        cout<<"No tienes matriculada esa materia"<<endl;
+                    }
+                        break;
+                    case 3:
+                    //Cambio de una hora asignada a otra disponible
+                    cout<<"Que dia vas a modificar? ";
+                    cin>>d;
+                    cout<<"Que hora? ";
+                    cin>>h;
+                    cout<<"A que dia lo vas a cambiar? ";
+                    cin>>nd;
+                    cout<<"A que hora? ";
+                    cin>>nh;
+                    cambiarHoraAutonoma(Horario, d, h, nd, nh);
+                        break;
+                    case 4:
+                        cout << "Hasta luego" << endl;
+                        break;
+                    default:
+                        cout << "Ingrese una opcion valida" << endl;
+                        break;
+                }
+            } while (opcion != 4);
 
 
     }catch(char c){
@@ -127,59 +206,5 @@ int main()
     }
     return 0;
 }
-int NumElem(char* array)
-{
-    int cont=0;
-    for(int i=0;*(array+i)!='\0';i++)
-        cont++;
 
-    return cont;
-}
 
-bool CompArr(char* array1, char* array2)
-{
-    bool b=true;
-    if(NumElem(array1)!=NumElem(array2))
-        return false;
-    else
-    {
-        for(int i=0; i<NumElem(array1); i++)
-        {
-            if(*(array1+i)!=*(array2+i))
-            {
-                b=false;
-                break;
-            }
-        }
-    }
-    return b;
-}
-
-int Char_Int(char* array)
-{
-    int elem=NumElem(array), aux=1, num=0;
-    for(int i=elem-1; i>=0; i--)
-    {
-        num=num+(*(array+i)-48)*aux;
-        aux*=10;
-    }
-    return num;
-}
-
-int ConversionDia(char c){
-    if(c=='L'){
-        return 0;
-    }
-    else if(c=='M'){
-        return 1;
-    }
-    else if(c=='W'){
-        return 2;
-    }
-    else if(c=='J'){
-        return 3;
-    }
-    else if(c=='V'){
-        return 4;
-    }
-}
