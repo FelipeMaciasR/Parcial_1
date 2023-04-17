@@ -2,6 +2,7 @@
 
 using namespace std;
 
+//Numero de caracteres en una cadena
 int NumElem(char* array)
 {
     int cont=0;
@@ -11,6 +12,7 @@ int NumElem(char* array)
     return cont;
 }
 
+//Comparar dos cadenas de caracteres
 bool CompArr(char* array1, char* array2)
 {
     bool b=true;
@@ -30,6 +32,7 @@ bool CompArr(char* array1, char* array2)
     return b;
 }
 
+//Conversion de un char a int
 int Char_Int(char* array)
 {
     int elem=NumElem(array), aux=1, num=0;
@@ -41,6 +44,7 @@ int Char_Int(char* array)
     return num;
 }
 
+//Ayuda a la hora de leer el archivo Horario
 int ConversionDia(char c){
     if(c=='L'){
         return 0;
@@ -59,18 +63,22 @@ int ConversionDia(char c){
     }
 }
 
-void modificarHorario(char Horario[][5][20], int d, int h, char materia[]) {
+bool modificarHorario(char Horario[][5][20], int d, int h, char materia[]) {
     h -= 8;
     d -= 1;
+    bool V;
     char D[11]="Disponible";
     if (CompArr(Horario[h][d], D)) { //Verificacion si la hora esta disponible copio el nombre de la materia a asignar
-        for (int i = 0; i < 20 && materia[i] != '\0'; i++) {
+        for (int i = 0; i < 20 && materia[i] != '\0'; i++) {//Copio el nombre de la materia en el espacio
             Horario[h][d][i] = materia[i];
         }
+        V=true;
 
     } else {
         cout << "La hora no esta disponible" << endl;
+        V=false;
     }
+    return V;
 }
 
 void cambiarHoraAutonoma(char Horario[][5][20], int d, int h, int nd, int nh) {
@@ -88,4 +96,16 @@ void cambiarHoraAutonoma(char Horario[][5][20], int d, int h, int nd, int nh) {
         }
         Horario[h][d][10]='\0';
     }
+}
+
+//Verifico si faltan horas de estudio autonomo por asignar
+bool VerificacionHA(char Materias[][5][20], int materia){
+    bool V=true;
+    for(int i=0; i<materia; i++){
+        if(Char_Int(Materias[i][4])>0){
+            V=false;
+            break;
+        }
+    }
+    return V;
 }

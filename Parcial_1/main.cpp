@@ -114,7 +114,8 @@ int main()
         //Menu para asignacion de horas autonomas
         int opcion, h, d, nd, nh;
         char materiaHA[20]={0};
-        bool Verificacion;
+        bool Verificacion, Verificacion2;
+        char V[3]={0}, Si[3]={"Si"}, No[3]={"No"};
         do {
                 cout << "Menu:" << endl;
                 cout << "1. Visualizar horario" << endl;
@@ -156,10 +157,12 @@ int main()
                                 cin>>d;
                                 cout<<"A que hora? ";
                                 cin>>h;
-                                modificarHorario(Horario, d, h, materiaHA);
-                                Horario[h-8][d-1][NumElem(materiaHA)] = '*'; //Indica hora autonoma, diferente de hora de clase
-                                Materias[i][4][0]=(Char_Int(Materias[i][4])-1)+48;//Resto uno a las horas autonomas por asignar
-
+                                Verificacion2=modificarHorario(Horario, d, h, materiaHA);
+                                if(Verificacion2==true){
+                                    Horario[h-8][d-1][NumElem(materiaHA)] = '*'; //Indica hora autonoma, diferente de hora de clase
+                                    Materias[i][4][0]=(Char_Int(Materias[i][4])-1)+48;//Resto uno a las horas autonomas por asignar
+                                    cout<<"La hora ha sido asignada"<<endl;
+                                }
                             }
                             else{
                                 cout<<"No tienes horas de estudio autonomo por asignar en "<<Materias[i][1]<<endl;
@@ -185,14 +188,58 @@ int main()
                     cambiarHoraAutonoma(Horario, d, h, nd, nh);
                         break;
                     case 4:
+                    if(VerificacionHA(Materias, materia)==false){
+                        //Si aun faltan horas por asignar, se lo hago saber al usuario
+                        cout<<"Aun tienes horas de estudio autonomo por asignar, seguro que quieres salir? (Si o No) ";
+                        cin>>V;
+                        if(CompArr(V, Si)){
+                            //Si desea salir, imprimo una ultima vez el horario
+                            cout << "Asi quedo su horario" << endl;
+                            cout << "       ";
+                            for(int j = 0; j < 5; j++) {
+                                printf("%-*s", 20, Dias[j]);
+                            }
+                            cout << endl;
+                            for(int i = 0; i < 12; i++) {
+                                printf("%2d:00  ", i+8);
+                                for(int j = 0; j < 5; j++) {
+                                    printf("%-*s", 20, Horario[i][j]);
+                                }
+                                cout << endl;
+                            }
+                            cout << "Hasta luego" << endl;
+                            break;
+                        }
+                        else{
+                            opcion=0;
+                            break;
+                        }
+                    }
+                    else{
+                        //Una vez no tenga horas para asignar y y el usuario desee salir
+                        //imprimo una ultima vez el horario
+                        cout << "Asi quedo su horario" << endl;
+                        cout << "       ";
+                        for(int j = 0; j < 5; j++) {
+                            printf("%-*s", 20, Dias[j]);
+                        }
+                        cout << endl;
+                        for(int i = 0; i < 12; i++) {
+                            printf("%2d:00  ", i+8);
+                            for(int j = 0; j < 5; j++) {
+                                printf("%-*s", 20, Horario[i][j]);
+                            }
+                            cout << endl;
+                        }
                         cout << "Hasta luego" << endl;
+
                         break;
+                    }
                     default:
                         cout << "Ingrese una opcion valida" << endl;
                         break;
                 }
             } while (opcion != 4);
-
 
     }catch(char c){
         cout<<"Error # "<<c<<": ";
