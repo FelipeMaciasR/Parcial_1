@@ -157,11 +157,16 @@ int main()
                                 cin>>d;
                                 cout<<"A que hora? ";
                                 cin>>h;
-                                Verificacion2=modificarHorario(Horario, d, h, materiaHA);
-                                if(Verificacion2==true){
-                                    Horario[h-8][d-1][NumElem(materiaHA)] = '*'; //Indica hora autonoma, diferente de hora de clase
-                                    Materias[i][4][0]=(Char_Int(Materias[i][4])-1)+48;//Resto uno a las horas autonomas por asignar
-                                    cout<<"La hora ha sido asignada"<<endl;
+                                if((d>=1 && d<=5)&&( h>=8 && h<=19)){ //Validacion de los datos ingresados
+                                    Verificacion2=modificarHorario(Horario, d, h, materiaHA);
+                                    if(Verificacion2==true){
+                                        Horario[h-8][d-1][NumElem(materiaHA)] = '*'; //Indica hora autonoma, diferente de hora de clase
+                                        Materias[i][4][0]=(Char_Int(Materias[i][4])-1)+48;//Resto uno a las horas autonomas por asignar
+                                        cout<<"La hora ha sido asignada"<<endl;
+                                    }
+                                }
+                                else{
+                                    cout<<"Dia u hora invalida"<<endl;
                                 }
                             }
                             else{
@@ -185,7 +190,12 @@ int main()
                     cin>>nd;
                     cout<<"A que hora? ";
                     cin>>nh;
-                    cambiarHoraAutonoma(Horario, d, h, nd, nh);
+                    if((d>=1 && d<=5)&&( h>=8 && h<=19) && (nd>=1 && nd<=5) &&( nh>=8 && nh<=19)){//Validacion de los datos ingresados
+                        cambiarHoraAutonoma(Horario, d, h, nd, nh);
+                    }
+                    else{
+                        cout<<"Dia u hora invalida"<<endl;
+                    }
                         break;
                     case 4:
                     if(VerificacionHA(Materias, materia)==false){
@@ -210,7 +220,12 @@ int main()
                             cout << "Hasta luego" << endl;
                             break;
                         }
+                        else if(CompArr(V, No)){
+                            opcion=0;
+                            break;
+                        }
                         else{
+                            cout<<"Opcion invalida"<<endl;
                             opcion=0;
                             break;
                         }
